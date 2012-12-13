@@ -344,57 +344,6 @@ int in_poly(pt p, polygon T) {
 	return n % 2;
 }
 
-
-int dep, M;
-int pai[30], vis[30], valid[1000];
-vector<pii> edge;
-pt I[1000], R[30], T[1000];
-
-void dfs(int v, int p) {
-	vis[v] = ++dep;
-	pai[v] = p;
-	for(int u=0;u<M;u++) if(u != p && u != v) {
-		double rsum = R[v].r + R[u].r;
-		if(cmpD(abs(R[v],R[u]), rsum) < 0) {
-            if(!vis[u]) dfs(u, v);
-            else if(vis[u] < vis[v]) edge.pb(mp(u,v));
-        }
-	}
-}
-
-int main(void) {
-	int i, j, B, N;
-	while(scanf("%d",&B) && B) {
-		for(i=0;i<B;i++) scanf("%lf%lf", &T[i].x, &T[i].y);
-		scanf("%d",&N);
-		for(i=0;i<N;i++) scanf("%lf%lf", &I[i].x, &I[i].y);
-		scanf("%d",&M);
-		for(i=0;i<M;i++) scanf("%lf%lf%lf", &R[i].x, &R[i].y, &R[i].r);
-        memset(vis, 0, sizeof(vis));
-        //elimina informantes dentro dos radares
-		for(i=0;i<N;i++) {
-            valid[i] = 1;
-            for(j=0;j<M;j++) if(cmpD(abs(I[i],R[j]), R[j].r) <= 0) valid[i] = 0;
-        }
-        //elimina informantes dentro dos poligonos
-        //acha os poligonos fazendo um dfs para encontrar ciclos
-        edge.clear();
-        for(i=0;i<M;i++) if(!vis[i]) dep=0, dfs(i, -1);
-        for(i=0;i<edge.sz;i++) {
-            polygon pol;
-            for(j=edge[i].second; j != edge[i].first; j=pai[j]) pol.pb(pt(R[j].x,R[j].y));
-            pol.pb(pt(R[j].x,R[j].y));
-            for(j=0;j<N;j++) if(valid[j] && in_poly(I[j], pol)) valid[j] = 0;
-        }
-        int besti = 0;
-        double dmin, gmin=0;
-        for(i=0;i<N;i++) if(valid[i]) {
-            dmin = INF;
-            for(j=0;j<B;j++) dmin = min(dmin, dist_pt_seg(I[i], T[j], T[(j+1)%B]));
-            if(dmin > gmin) gmin = dmin, besti = i+1;
-        }
-        if(besti) printf("Contact informer %d\n", besti);
-		else printf("Mission impossible\n");
-	}
+int main() {
 	return 0;
 }
