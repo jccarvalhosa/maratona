@@ -151,7 +151,7 @@ double dist_seg_seg(pt p, pt q, pt r, pt s) {
 //retorna o circuncentro do triangulo pqr
 pt circumcenter(pt p, pt q, pt r) {
     pt a=p-r, b=q-r, c=pt(a*(p+r)/2, b*(q+r)/2);
-    return pt(c % pt(a.y, b.y), pt(a.x, b.x) % c / (a % b));
+    return pt(c % pt(a.y, b.y), pt(a.x, b.x) % c) / (a % b);
 }
 
 //dados o ponto p e a circunferencia definida por o e r
