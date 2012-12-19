@@ -15,16 +15,17 @@ int main() {
         for(i=0;i<N;i++) v[i] = make_pair(c[i]-'0', i);
         sort(v.begin(), v.end());
         set<int> s;
+        set<int>::iterator ita, itb;
         s.insert(-1);
         s.insert(N);
         int resp=0;
         for(i=0;i<N;i++) {
             pos = v[i].second;
-            a = *(--s.lower_bound(pos));
-            b = *(s.upper_bound(pos));
             s.insert(pos);
             x = v[i].first;
-            resp = (resp + x*(b-pos)*(pos-a)) % MOD;
+            ita = itb = s.find(pos);
+            ita--; itb++;
+            resp = (resp + x*(*itb - pos)*(pos - *ita)) % MOD;
         }
         printf("%d\n", resp);
     }
