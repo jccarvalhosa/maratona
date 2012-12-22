@@ -4,22 +4,17 @@
 
 ###########################
 #       USAGE             #
-# 1- sh teste.sh name exe #
-# 2- sh teste.sh name     #
+# 1- bash teste.sh name exe #
+# 2- bash teste.sh name     #
 ###########################
 
-NAME=$1
-if [ -z $2 ]; then EXE='a.out'; else EXE=$2; fi
-TESTS=$(echo $(ls ~/Downloads/$NAME | wc -l))
-i=1
-while((i<=$TESTS)); do
-    A='~/Downloads/'$NAME'/test'$i
-    CASES=$(echo $(eval $(echo 'ls '$A' | wc -l')))
-    CASES=$(expr $CASES / 2)
-    j=1
-    while((j<=$CASES)); do
-        echo 'teste: '$i','$j' -> '$(eval $(echo './'$EXE' < '$A'/in'$j' | diff '$A'/out'$j' -' ))
-        j=$(expr $j + 1)
-    done
-    i=$(expr $i + 1)
+DIR=/Users/jocarvalhosa/Downloads/$1
+if [ -z "$2" ]; then EXE="a.out"; else EXE="$2"; fi
+for T in $(ls $DIR); do
+	for IN in $(ls $DIR/$T | grep in); do
+		echo -n "$T: $IN -> "
+		OUT=$(echo $IN | sed 's/in/out/')
+		DIFF=$(diff -by $DIR/$T/$OUT <(./$EXE < $DIR/$T/$IN))
+		if [ $? -eq 0 ]; then echo 'OK' ; else echo "$DIFF" ; fi
+	done
 done
