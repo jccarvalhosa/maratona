@@ -57,10 +57,7 @@ int main() {
 		}
 		if(c == 'S') {
 			ll sum=0;
-			for(i=0;i<n;i++) if(a <= s[i].f && b >= s[i].i) {
-				ll aux = pasum(val(max(a, s[i].i), s[i]), val(min(b, s[i].f), s[i]));
-				sum += aux;
-			}
+			for(i=0;i<n;i++) if(a <= s[i].f && b >= s[i].i) sum += pasum(val(max(a, s[i].i), s[i]), val(min(b, s[i].f), s[i]));
 			printf("%lld\n", sum);
 		}
 	}
