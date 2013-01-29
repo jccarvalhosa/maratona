@@ -44,6 +44,7 @@ inline bool pt_in_tri(pt p, pt T[3]) {
 
 inline bool seg_in_tri(pt p, pt q, pt T[3]) {
 	if(coplanar(p, T[0], T[1], T[2]) && coplanar(q, T[0], T[1], T[2])) {
+		if(pt_in_tri(p, T)) return 1;
 		for(int i=0;i<3;i++) if(seg_intersect(p, q, T[i], T[(i+1)%3])) return 1;
 		return 0;
 	}
