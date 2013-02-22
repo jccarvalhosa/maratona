@@ -6,7 +6,8 @@ typedef long long ll;
 #define INF 1000000000000LL
 
 //pd[n][k][0-1] -> first n elements, k heaps, 1 if the first is used, 0 if its not used
-ll pd[1001][1001][2], pdmin[1001][1001], penal[1001][1001], x[1001], w[1001];
+//penal[i][j] -> penalty for dragging all the heaps from i to j
+ll pd[1001][1001][2], penal[1001][1001], x[1001], w[1001];
 
 int main() {
 	int n, k, i, j, aux;
