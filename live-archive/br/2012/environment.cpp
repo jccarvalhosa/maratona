@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <algorithm>
 using namespace std;
-#define EPS 1e-7
+#define EPS 1e-9
 
 int K;
 double W, D, A, fn[10], fd[10], gn[10], gd[10], exp[10];
