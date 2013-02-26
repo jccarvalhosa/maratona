@@ -18,12 +18,11 @@ double val(double *pn, double *pd, double x, double m) {
 }
 
 double area(double m) {
-	double sum=0, x, mid, delta=1e-3;
+	double sum=0, x, nx, delta=1e-3;
 	for(x=0;x<=W;x+=delta) {
-		double nx = min(x+delta, W);
-		double diff = nx-x;
-		sum += diff*val(fn, fd, x+diff/2, m);
-		sum -= diff*val(gn, gd, x+diff/2, m);
+		nx = min(x+delta, W);
+		sum += (nx-x)*val(fn, fd, (x+nx)/2, m);
+		sum -= (nx-x)*val(gn, gd, (x+nx)/2, m);
 	}
 	return sum;
 }
@@ -46,7 +45,6 @@ int main() {
 		for(i=0;i<=K;i++) scanf("%lf", &gn[i]);
 		for(i=0;i<=K;i++) scanf("%lf", &gd[i]);
 		printf("%.5lf\n", binary_search(-D, 0, A));
-		//printf("area(5.5) = %lf\n", area(-5.5));
 	}
 	return 0;
 }
