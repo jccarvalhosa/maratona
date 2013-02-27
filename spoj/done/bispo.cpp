@@ -11,19 +11,17 @@ struct euclides {
 int mod(int a, int m) { return (a%m + m) % m; }
 
 struct euclides emdc(int a, int b) {
-	ll x=0, y=1, u=1, v=0, m, n;
-	while(a != 0) {
-		int q=b/a, r=b%a;
-		m = x-u*q; n = y-v*q;
-		b=a; a=r; x=u; y=v; u=m; v=n;
-	}
-	return euclides(b, x, y);
+	if(a==0) return euclides(b, 0, 1);
+	struct euclides e = emdc(b%a, a);
+	return euclides(e.m, e.y - b/a*e.x, e.x);
 }
+
+int inv(int a, int b) { return mod(emdc(a, b).x, b); }  /* a * inv(a, b) = mdc(a, b) % b*/
 
 struct euclides e;
 
 int a, b, c1, c2;
-ll sol[4], inv, MAX=-1;
+ll sol[4], I, MAX=-1;
 
 int find(int x, int y) {
 	int i, j, n=0, nx=1, ny=1, v, px[2], py[2];
@@ -41,7 +39,7 @@ int find(int x, int y) {
 		if((y-x) % e.m != 0) continue;
 		v = (y-x) / e.m;
 		if(c2 == 1) k1 = -v/c1;
-		else k1 = (inv * mod(v, c2)) % c2;
+		else k1 = (I * mod(v, c2)) % c2;
 		sol[n] = k1*(2*a-2) + x;
 		if(MAX==-1 || (sol[n] >= 0 && sol[n] <= MAX)) n++;
 	}
@@ -55,7 +53,7 @@ int main() {
 	e = emdc(2*a-2, 2*b-2);
 	c1 = (2*a-2) / e.m;
 	c2 = (2*b-2) / e.m;
-	if(c2 != 1) inv = mod(emdc(c1, c2).x, c2);
+	if(c2 != 1) I = inv(c1, c2);
 	if(find(1, b)) MAX = sol[0];
 	else if(find(a, 1)) MAX = sol[0];
 	else if(find(a, b)) MAX = sol[0];
