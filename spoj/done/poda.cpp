@@ -21,7 +21,9 @@ struct pt {
         return t ? t : cmpD(y, p.y);
     }
     bool operator <(const pt &p)const { return cmp(p) < 0; }
+    bool operator !=(const pt &p)const { return cmp(p) != 0; }
     int prod(pt p, pt q) { return cmpD((*this-p) % (q-p)); }
+    bool right(pt p, pt q) { return prod(p, q) > 0; }
 };
 typedef vector<pt> polygon;
 pt pivot;
@@ -29,15 +31,15 @@ pt pivot;
 bool radial_lt(pt p, pt q) {
     pt P = p - pivot, Q = q - pivot;
     double R = P % Q;
-    if(cmpD(R)) return cmpD(R) > 0;
-    return cmpD(P*P, Q*Q) < 0;
+    if(cmpD(R)) return R > 0;
+    return (P*P, Q*Q) < 0;
 }
 
-polygon convex_hull(vector<pt> &T) {
+polygon convex_hull(vector<pt> T) {
     int i, j=0, k, n=T.sz; polygon U(n);
     pivot = *min_element(all(T));
     sort(all(T), radial_lt);
-    for(k=n-2; k>=0 && T[k].prod(T[0], T[n-1]) == 0; k--) ;
+    for(k=n-2; k>=0 && T[0].prod(T[k], T[n-1]) == 0; k--) ;
     reverse((k+1) + all(T));
     for(i=0;i<n;i++) {
         while(j>1 && T[i].prod(U[j-1], U[j-2]) <= 0) j--;
@@ -65,11 +67,9 @@ int main() {
 	for(i=0;i<N-1;i++) ang = min(ang, p[i].y/(N-1-p[i].x));
 	sum = max(sum, ang*(N-1));
 	p = convex_hull(p);
-	if(p.sz == 2) sum = max(sum, yline(p[0], p[1], 0) + yline(p[0], p[1], N-1));
-	else for(i=0;i<p.sz;i++) {
-		pt a = p[i], b = p[(i+1) % p.sz];
-		pt u = p[(i-1 + p.sz) % p.sz], v = p[(i+2) % p.sz];
-		if(cmpD(yline(a, b, u.x), u.y) <= 0 && cmpD(yline(a, b, v.x), v.y) <= 0) {
+	for(i=0;i<p.sz;i++) {
+		pt a = p[i], b = p[(i+1) % p.sz], c = p[(i+2) % p.sz];
+		if(cmpD(yline(a, b, c.x), c.y) <= 0) {
 			h = yline(a, b, 0);
 			H = yline(a, b, N-1);
 			if(cmpD(h) >= 0 && cmpD(H) >= 0) sum = max(sum, h+H);

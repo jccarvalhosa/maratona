@@ -286,11 +286,11 @@ bool radial_lt(pt p, pt q) {
 }
 
 //GRAHAM SCAN
-polygon convex_hull(vector<pt>& T) {
+polygon convex_hull(vector<pt> T) {
     int i, j=0, k, n=T.sz; polygon U(n);
     pivot = *min_element(all(T));
     sort(all(T), radial_lt);
-    for(k=n-2; k>=0 && T[k].prod(T[0], T[n-1]) == 0; k--) ;
+    for(k=n-2; k>=0 && T[0].prod(T[k], T[n-1]) == 0; k--) ;
     reverse((k+1) + all(T));
     for(i=0;i<n;i++) {
         while(j>1 && T[i].prod(U[j-1], U[j-2]) <= 0) j--;
@@ -298,23 +298,6 @@ polygon convex_hull(vector<pt>& T) {
     }
     U.erase(j + all(U));
     return U;
-}
-
-//JARVIS MARCH
-polygon jarvis_convex_hull(vector<pt> v) {
-    int vis[10000], p=0, np;
-    polygon u;
-    fori(i, v.sz) {
-        vis[i]=0;
-        if(v[i] < v[p]) p = i;
-    }
-    while(!vis[p]) {
-        vis[p] = 1; u.pb(v[p]); np = -1;
-        fori(i, v.sz) if(v[i] != v[p]) 
-            if(np == -1 || v[i].right(v[p], v[np]) || (v[i].prod(v[p], v[np]) == 0 && abs(v[i], v[p]) > abs(v[np], v[p]))) np = i;
-        p = np;
-    }
-    return u;
 }
 
 double poly_area(polygon T) {
