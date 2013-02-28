@@ -3,7 +3,6 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
-#define INF 1000000000
 typedef pair<int, bool> pib;
 
 vector<int> adj[300];
