@@ -344,6 +344,9 @@ int in_poly(pt p, polygon T) {
 	return n % 2;
 }
 
+//retorna a coordenada y de x na reta ab
+double yline(pt a, pt b, double x) { return b.y + (x-b.x)*(a.y-b.y)/(a.x-b.x); }
+
 int main() {
 	return 0;
 }
