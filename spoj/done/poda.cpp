@@ -21,9 +21,7 @@ struct pt {
         return t ? t : cmpD(y, p.y);
     }
     bool operator <(const pt &p)const { return cmp(p) < 0; }
-    bool operator !=(const pt &p)const { return cmp(p) != 0; }
     int prod(pt p, pt q) { return cmpD((*this-p) % (q-p)); }
-    bool right(pt p, pt q) { return prod(p, q) > 0; }
 };
 typedef vector<pt> polygon;
 pt pivot;
