@@ -65,8 +65,7 @@ int main() {
 	for(i=0;i<N-1;i++) ang = min(ang, p[i].y/(N-1-p[i].x));
 	sum = max(sum, ang*(N-1));
 	p = convex_hull(p);
-	if(p.sz == 2) sum = max(sum, yline(p[0], p[1], 0) + yline(p[0], p[1], N-1));
-	else for(i=0;i<p.size();i++) {
+	for(i=0;i<p.size();i++) {
 		pt a = p[i], b = p[(i+1) % p.sz], c = p[(i+2) % p.sz];
 		if(cmpD(yline(a, b, c.x), c.y) <= 0) {
 			h = yline(a, b, 0);
@@ -77,5 +76,3 @@ int main() {
 	printf("%.2lf\n", sum*N/2);
 	return 0;
 }
-
-
