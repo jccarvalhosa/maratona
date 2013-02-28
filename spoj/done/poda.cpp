@@ -66,7 +66,7 @@ int main() {
 	sum = max(sum, ang*(N-1));
 	p = convex_hull(p);
 	if(p.sz == 2) sum = max(sum, yline(p[0], p[1], 0) + yline(p[0], p[1], N-1));
-	else for(i=0;i<p.size();i++) {
+	else for(i=0;i<p.sz;i++) {
 		pt a = p[i], b = p[(i+1) % p.sz];
 		pt u = p[(i-1 + p.sz) % p.sz], v = p[(i+2) % p.sz];
 		if(cmpD(yline(a, b, u.x), u.y) <= 0 && cmpD(yline(a, b, v.x), v.y) <= 0) {
