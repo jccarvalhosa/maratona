@@ -282,7 +282,7 @@ bool radial_lt(pt p, pt q) {
     pt P = p - pivot, Q = q - pivot;
     double R = P % Q;
     if(cmpD(R)) return cmpD(R) > 0;
-    return cmpD(P*P, Q*Q) < 0;
+    return cmpD(P*P, Q*Q) > 0;
 }
 
 //GRAHAM SCAN
