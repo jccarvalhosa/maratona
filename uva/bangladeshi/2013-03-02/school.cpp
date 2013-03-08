@@ -5,21 +5,6 @@ using namespace std;
 
 int orig[MAX], v[MAX], f[MAX];
 
-int upper_bound(int *p, int i, int f, int key) {
-	int m, N = f;
-	while(1) {
-		m = (i+f)/2;
-		if(p[m] <= key) {
-			i = m+1;
-			if(i==N || p[i] > key) return i;
-		}
-		else {
-			f=m;
-			if(i==f) return i;
-		}
-	}
-}
-
 int main() {
 	int T, t, q, n, i, j, k, a, up;
 	scanf("%d", &T);
@@ -38,7 +23,7 @@ int main() {
 			if(a <= k) printf("%d\n", orig[a-1]);
 			else if(v[k-1] < a) printf("%d\n", a);
 			else {
-				up = upper_bound(f, 0, k, a-k-1);
+				up = upper_bound(f, f+k, a-k-1) - f;
 				printf("%d\n", v[up-1] + a-k-f[up-1]);
 			}
 		}

@@ -20,16 +20,12 @@ struct pt {
 bool compareX(const pt &a, const pt &b) { return a.x < b.x; }
 bool compareY(const pt &a, const pt &b) { return a.y < b.y; }
 
-int counter;
-
 struct KdTree {
-	// Elements
 	pt vertex;
 	KdTree *left;
 	KdTree *right;
 	int nchilds;
 	ll minx, miny, maxx, maxy;
-	// Constructors & Destructors
 	KdTree(const pt &p) : vertex(p), left(0), right(0), nchilds(0) {
 		minx = maxx = p.x;
 		miny = maxy = p.y;
@@ -39,7 +35,6 @@ struct KdTree {
 		if(right) delete right;
 	}
 
-	// Build a balanced tree, complexity O(n⋅log(n))
 	static KdTree* build(vector<pt>::iterator first, int n, bool odd=false) {
 		if(n == 0) return 0;
 		if(n == 1) return new KdTree(*first);
@@ -61,7 +56,6 @@ struct KdTree {
 	}
 
 	int range_count(ll a, ll b) {
-		//counter++;
 		if(minx >= a && miny >= b) return nchilds + 1;
 		if(maxx < a || maxy < b) return 0;
 		int ans = vertex.x >= a && vertex.y >= b;
@@ -88,9 +82,7 @@ int main() {
 	stringstream ss;
 	for(i=0;i<q;i++) {
 		scanf("%lld%lld", &a, &b);
-		counter=0;
 		ss << n - tree->range_count(a*a+1, b*b+1) << '\n';
-		//if(1ll * counter * counter > 16*n) printf("conter = %d\n", counter);
 	}
 	cout << ss.str();
 	if(tree) delete tree;
