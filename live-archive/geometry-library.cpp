@@ -328,7 +328,23 @@ int in_poly(pt p, polygon T) {
 }
 
 //retorna a coordenada y de x na reta ab
-double yline(pt a, pt b, double x) { return b.y + (x-b.x)*(a.y-b.y)/(a.x-b.x); }
+double yline(pt a, pt b, double x) { 
+	if(cmpD(x, b.x)==0) return b.y;
+	return b.y + (x-b.x)*(a.y-b.y)/(a.x-b.x);
+}
+
+//retorna a coordenada x de y na reta ab
+double xline(pt a, pt b, double y) { 
+	if(cmpD(y, b.y)==0) return b.x;
+	return b.x + (y-b.y)*(a.x-b.x)/(a.y-b.y);
+}
+
+//gira o ponto a teta graus em torno do ponto o
+pt rotate(pt a, double teta, pt o=pt()) {
+	a = a - o;
+	pt cis(cos(teta), sin(teta));
+	return o + pt(a.x*cis.x - a.y*cis.y, a.x*cis.y + a.y*cis.x);
+}
 
 int main() {
 	return 0;
