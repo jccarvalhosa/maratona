@@ -1,7 +1,5 @@
 #include <cstdio>
 #include <cstring>
-#include <algorithm>
-using namespace std;
 
 int m[7][8], v[7][8], conv[7][7], vis;
 
