@@ -1,7 +1,5 @@
 #include <cstdio>
-#include <algorithm>
 #include <cmath>
-using namespace std;
 #define INF 1e9
 #define EPS 1e-9
 
