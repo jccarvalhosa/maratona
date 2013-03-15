@@ -154,6 +154,27 @@ pt circumcenter(pt p, pt q, pt r) {
     return pt(c % pt(a.y, b.y), pt(a.x, b.x) % c) / (a % b);
 }
 
+typedef pair<pt, double> circle;
+
+bool in_circle(circle c, pt p) { return cmpD(abs(c.first, p), c.second) <= 0; }
+
+circle spanning_circle(vector<pt> v) {
+	int i, j, k, n = v.size();
+	random_shuffle(v.begin(), v.end());
+	circle c(pt(), -INF);
+	for(i=0;i<n;i++) if(!in_circle(c, v[i])) {
+		c = circle(v[i], 0);
+		for(j=0;j<i;j++) if(!in_circle(c, v[j])) {
+			c = circle((v[i]+v[j])/2, abs(v[i]-v[j])/2);
+			for(k=0;k<j;k++) if(!in_circle(c, v[k])) {
+				pt o=circumcenter(v[i], v[j], v[k]);
+				c = circle(o, abs(o-v[k]));
+			}
+		}
+	}
+	return c;
+}
+
 //dados o ponto p e a circunferencia definida por o e r
 //retorna os dois pontos de tangencia de p para a circunferencia
 pair<pt, pt> tangents(pt p, pt o) {
