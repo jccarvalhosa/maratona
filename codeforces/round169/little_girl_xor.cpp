@@ -1,21 +1,11 @@
-#include <cstdio>
 #include <iostream>
 using namespace std;
-typedef unsigned long long ull;
 
 int main() {
-	ull a, b, ans=0;
-	int i, flag=0;
-	cin >> a;
-	cin >> b;
-	for(i=63;i>=0;i--) {
-		int na = ((a & (1ull<<i)) != 0ull);
-		int nb = ((b & (1ull<<i)) != 0ull);
-		if((nb == 1 && na == 0) || flag == 1) {
-			flag=1;
-			ans += 1ull<<i;
-		}
-	}
-	cout << ans << endl;
+	unsigned long long a, b;
+	int i;
+	cin >> a >> b;
+	for(i=63;i>=0;i--) if((b & (1ull<<i)) != 0 && (a & (1ull<<i)) == 0) break;
+	cout << (1ull<<(i+1))-1 << endl;
 	return 0;
 }
