@@ -349,13 +349,13 @@ int in_poly(pt p, polygon T) {
 }
 
 //retorna a coordenada y de x na reta ab
-double yline(pt a, pt b, double x) { 
+double yline(double x, pt a, pt b) { 
 	if(cmpD(x, b.x)==0) return b.y;
 	return b.y + (x-b.x)*(a.y-b.y)/(a.x-b.x);
 }
 
 //retorna a coordenada x de y na reta ab
-double xline(pt a, pt b, double y) { 
+double xline(double y, pt a, pt b) { 
 	if(cmpD(y, b.y)==0) return b.x;
 	return b.x + (y-b.y)*(a.x-b.x)/(a.y-b.y);
 }
