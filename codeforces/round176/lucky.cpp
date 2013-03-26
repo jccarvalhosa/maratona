@@ -1,12 +1,11 @@
-#include <iostream>
-using namespace std;
+#include <cstdio>
 
 int v[100001];
 
 int main() {
 	int i, f, n;
-	cin>>n;
-	if(n%4 == 2 || n%4 == 3) cout<<-1<<endl;
+	scanf("%d", &n);
+	if(n%4 == 2 || n%4 == 3) printf("-1\n");
 	else {
 		if(n%4 == 1) v[(n+1)/2] = (n+1)/2;
 		i=1;
@@ -19,8 +18,7 @@ int main() {
 			i+=2;
 			f-=2;
 		}
-		for(i=1;i<=n;i++) cout << v[i] << " ";
-		cout<<endl;
+		for(i=1;i<=n;i++) printf("%d%c", v[i], i!=n?' ':'\n');
 	}
 	return 0;	
 }
