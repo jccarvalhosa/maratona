@@ -1,18 +1,17 @@
-#include <iostream>
-using namespace std;
+#include <cstdio>
 
 int p[1000001], s[1000001], v[1000001];
 
 int main() {
 	int n, t, i, top;
-	cin>>n;
+	scanf("%d", &n);
 	for(i=1;i<=n;i++) {
-		cin>>v[i];
+		scanf("%d", v+i);
 		s[i]=1;
 	}
-	cin>>t;
+	scanf("%d", &t);
 	while(t--) {
-		cin>>i;
+		scanf("%d", &i);
 		s[i]=-1;
 	}
 	top=0;
@@ -23,11 +22,10 @@ int main() {
 		}
 		else top--;
 	}
-	if(top) cout<<"NO"<<endl;
+	if(top) printf("NO\n");
 	else {
-		cout<<"YES"<<endl;
-		for(i=1;i<=n;i++) cout<<v[i]*s[i]<<" ";
-		cout << endl;
+		printf("YES\n");
+		for(i=1;i<=n;i++) printf("%d%c", v[i]*s[i], i!=n?' ':'\n');
 	}
 	return 0;
 }

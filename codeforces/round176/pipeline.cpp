@@ -1,5 +1,3 @@
-#include <cstdio>
-#include <cstring>
 #include <iostream>
 using namespace std;
 typedef long long ll;
@@ -24,11 +22,9 @@ ll lower_bound(ll i, ll f, ll key) {
 
 int main() {
 	ll s, a;
-	cin>>n>>k;
-	k--;
+	cin>>n>>k; k--;
 	s = sum(k);
 	if(n > s) cout<<-1<<endl;
-	else if(n==s) cout<<k<<endl;
 	else cout<<lower_bound(1, k, n)<<endl;
 	return 0;
 }

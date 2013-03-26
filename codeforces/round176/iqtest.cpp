@@ -2,9 +2,8 @@
 #include <string>
 using namespace std;
 
-string s[4];
-
 int main() {
+	string s[4];
 	int i, j, flag=0, cont;
 	for(i=0;i<4;i++) cin>>s[i];
 	for(i=0;i<3;i++) for(j=0;j<3;j++) {
