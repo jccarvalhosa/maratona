@@ -7,8 +7,8 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
 
-int n, N;
-ll cont[5000], total, extra, best;
+int N, n, cont[5000];
+ll total, extra, best;
 vector<pii> adj[5000];
 
 ll dfs(int v, int p, ll dist) {
@@ -44,7 +44,7 @@ void look_tree(int v, int p) {
 }
 
 int main() {
-	int i, na, nb, a[5000], b[5000];
+	int i, a[5000], b[5000];
 	ll w[5000], ans=INF;
 	cin>>N;
 	for(i=0;i<N-1;i++) {
