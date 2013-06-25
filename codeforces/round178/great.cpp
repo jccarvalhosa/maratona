@@ -8,29 +8,19 @@ typedef long long ll;
 typedef pair<int, int> pii;
 
 int n, N;
-ll cont[5000], total, best;
+ll cont[5000], total, extra, best;
 vector<pii> adj[5000];
 
-void go(int v, int p) {
-	int i, u;
-	n++;
-	for(i=0;i<adj[v].size();i++) {
-		u = adj[v][i].first;
-		if(u!=p) go(u, v);
-	}
-}
-
 ll dfs(int v, int p, ll dist) {
-	int i, u;
-	ll w, ret=dist;
+	ll ret=dist;
 	cont[v]=1;
-	for(i=0;i<adj[v].size();i++) {
-		u = adj[v][i].first;
-		w = adj[v][i].second;
+	n++;
+	for(int i=0;i<adj[v].size();i++) {
+		int u = adj[v][i].first;
+		ll w = adj[v][i].second;
 		if(u!=p) {
 			ret += dfs(u, v, dist+w);
 			cont[v] += cont[u];
-			total += w*cont[u]*(n-cont[u]);
 		}
 	}
 	return ret;
@@ -38,16 +28,24 @@ ll dfs(int v, int p, ll dist) {
 
 void find(int v, int p, ll sum) {
 	best = min(best, sum);
-	int i, u;
-	for(i=0;i<adj[v].size();i++) {
-		u = adj[v][i].first;
+	total += sum;
+	for(int i=0;i<adj[v].size();i++) {
+		int u = adj[v][i].first;
 		ll w = adj[v][i].second;
 		if(u != p) find(u, v, sum + w*(n-2*cont[u]));
 	}
 }
 
+void look_tree(int v, int p) {
+	n=0;
+	best = dfs(v, p, 0);
+	find(v, p, best);
+	extra += best*(N-n);
+}
+
 int main() {
-	int i, na, nb, a[5000], b[5000], w[5000];
+	int i, na, nb, a[5000], b[5000];
+	ll w[5000], ans=INF;
 	cin>>N;
 	for(i=0;i<N-1;i++) {
 		cin>>a[i]>>b[i]>>w[i];
@@ -55,24 +53,12 @@ int main() {
 		adj[a[i]].push_back(pii(b[i], w[i]));
 		adj[b[i]].push_back(pii(a[i], w[i]));
 	}
-	ll ans=INF;
 	for(i=0;i<N-1;i++) {
-		n=total=0;
-		go(a[i], b[i]);
-		na=n;
-		nb=N-n;
-		
-		n=na;
-		best = dfs(a[i], b[i], 0);
-		find(a[i], b[i], best);
-		total += best*nb;
-		
-		n=nb;
-		best = dfs(b[i], a[i], 0);
-		find(b[i], a[i], best);
-		total += best*na;
-
-		ans = min(ans, total + 1ll*na*nb*w[i]);
+		total=extra=0;
+		look_tree(a[i], b[i]);
+		look_tree(b[i], a[i]);
+		extra += w[i]*n*(N-n);
+		ans = min(ans, total/2 + extra);
 	}
 	cout<<ans<<endl;
 	return 0;
