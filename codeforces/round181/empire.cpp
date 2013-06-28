@@ -31,13 +31,8 @@ void count(int n, int k) {
 }
 
 ll mult(ll p, ll n) {
-	ll q=n, ret=0;
-	if(p > n) return 0;
-	if(p > n/2) return 1;
-	while(q >= p) {
-		q /= p;
-		ret += q;
-	}
+	ll ret=0;
+	while(n >= p) n /= p, ret += n;
 	return ret;
 }
 
