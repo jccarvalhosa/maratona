@@ -17,7 +17,7 @@ int main() {
 	while(q--) {
 		t=0;
 		cin>>n>>k;
-		while(n>1 && n&1) n = n/=2, t++;
+		while(n>1 && n&1) n/=2, t++;
 		cout<<dp[t][k]<<endl;
 	}
 	return 0;
