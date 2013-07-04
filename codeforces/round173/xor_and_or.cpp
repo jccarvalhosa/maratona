@@ -1,13 +1,15 @@
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <iostream>
+#include <string>
+using namespace std;
 
-char a[1000010], b[1000010];
 
 int main() {
 	int A, B, flaga, flagb, i;
-	scanf("%s %s", a, b);
-	A = strlen(a);
-	B = strlen(b);
+	string a, b;
+	cin>>a>>b;
+	A = a.size();
+	B = b.size();
 	if(A != B) printf("NO");
 	else {
 		for(i=0;i<A && a[i]=='0';i++) ;
