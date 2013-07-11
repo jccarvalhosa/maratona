@@ -1,31 +1,40 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
 using namespace std;
 typedef long long ll;
 
-ll cont(ll n, ll e) {
-	ll sum = (n/e)*e/2;
-	sum += max(n%e-e/2+1, 0ll);
-	return sum % 2;
-}
-
-ll calc(ll n) {
-	ll ans=0;
-	for(int i=0;i<31;i++) if(cont(n, 1ll<<(i+1))) ans += 1ll<<i;
-	return ans;
-}
-
-ll total(ll n, ll x) {
-	if(!x) return 0;
-	int lx = 63 - __builtin_clzll(x);
-	ll a = 1 + n / (1ll<<(lx+1));
-	ll b = 1 + min(n - (1ll<<lx), (1ll<<lx)-1);
-	return a*b;
+int valid(vector<ll> v, int n) {
+	while(1) {
+		if(n<=2) return 1;
+		if(n%2==1) return 0;
+		vector<ll> u;
+		int c=1, i;
+		ll k=0;
+		for(i=1;i<n;i++) {
+			if(v[i]==v[i-1]) {
+				c++;
+				if(c==n/2) k=v[i];
+			}
+			else c=1;
+		}
+		if(k==0) return 0;
+		c = n/2;
+		for(i=0;i<n;i++) {
+			if(c==0 || v[i] != k) u.push_back(v[i]);
+			else c--;
+		}
+		n /= 2;
+		v = u;
+	}
 }
 
 int main() {
-	ll n;
+	int n, i;
 	cin>>n;
-	cout<<(n*(n+1)/2)<<" "<<total(n, calc(n))<<endl;
+	vector<ll> v(n);
+	for(i=0;i<n;i++) cin>>v[i];
+	sort(v.begin(), v.end());
+	cout<<(valid(v, n)?"YES":"NO")<<endl;
 	return 0;
 }
