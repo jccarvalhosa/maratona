@@ -5,10 +5,11 @@ using namespace std;
 int adj[52][52], vis[52];
 
 void dfs(int v) {
+	int u, i;
 	vis[v]=1;
-	if(v%2==0) v++;
-	else v--;
-	for(int i=0;i<52;i++) if(adj[v][i] && !vis[i]) dfs(i);
+	if(v%2==0) u=v+1;
+	else u=v-1;
+	for(i=0;i<52;i++) if(adj[u][i] && !vis[i]) dfs(i);
 }
 
 int cicle() {
