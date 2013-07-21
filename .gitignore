@@ -1,6 +1,7 @@
 syntax: glob
 
 *.swp
+*.swo
 .DS_Store
 a.out
 vteste
