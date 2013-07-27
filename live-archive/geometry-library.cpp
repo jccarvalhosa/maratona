@@ -21,7 +21,7 @@ using namespace std;
 #define mp make_pair
 #define TRACE(x...) x
 #define WATCH(x) TRACE(cout << #x"=" << x << endl)
-#define EPS 1e-3
+#define EPS 1e-6
 #define INF 1e9
 #define mod(a) a > 0 ? a : -a
 const double PI = 2*acos(0);
@@ -130,6 +130,18 @@ bool seg_intersect(pt p, pt q, pt r, pt s) {
     if(r.between(p, q) || s.between(p, q) || p.between(r, s) || q.between(r, s)) return true;
     pt a = line_intersect(p, q, r, s);
     return a.between(p, q) && a.between(r, s);
+}
+
+//dados o ponto p, o angulo teta e pontos a e b da reta
+//retorna os dois pontos da reta ab que o ponto p observa com angulo teta
+segment angle_intersect(pt p, double teta, pt a, pt b) {
+	pt pp = a + project(p-a, b-a);
+	if(cmpD(teta, PI/2)==0) return mp(pp, pp);
+	if(cmpD(teta)==0 || cmpD(teta, PI)==0) return mp(-INF, INF);
+	double d = abs(p, pp);
+	double x = d / tan(teta);
+	pt u = (b-a)/abs(b-a);
+	return mp(pp-u*x, pp+u*x);
 }
 
 //distancia entre um ponto e uma reta
@@ -275,13 +287,13 @@ segment shadow(pt p, pt o, pt ini, pt fim) {
     pt p2 = line_intersect(p, tg.second, ini, fim);  
     if(p1 > p2) swap(p1, p2);
     if(cmpD(d1, d2+o.r) <= 0) {
-        pt pl = ini + project(p, fim - ini);
-        pt pc = ini + project(o, fim - ini);
+        pt pp = ini + project(p, fim - ini);
+        pt po = ini + project(o, fim - ini);
         if(p2 == pt(INF, INF)) {
-            if(pl > pc) p2 = pt(-INF, -INF);
+            if(pp > po) p2 = pt(-INF, -INF);
             else swap(p1, p2);
         } 
-        else if(pl > pc) p2 = pt(-INF, -INF);
+        else if(pp > po) p2 = pt(-INF, -INF);
         else p1 = pt(INF, INF);
         swap(p1, p2);
     }
