@@ -333,6 +333,19 @@ polygon convex_hull(vector<pt> T) {
     return U;
 }
 
+// retorna a area do triangulo abc
+// se abc sao dados no sentido anti-horario, a area é positiva
+// se abc sao dados no sentido horario, a area é negativa
+double area_triangle(pt a, pt b, pt c) { return (b%c - a%c + a%b)/2; }
+
+//retorna a area do setor circular determinado pelos pontos a e b
+//a e b nao precisam pertencer a circunferencia
+double area_sector(pt o, double r, pt a, pt b) { return r*r*angle(a, o, b)/2; }
+
+//retorna a area da calota que os pontos a e b determinam na circunferencia
+//a e b devem pertencer a circunferencia
+double area_cut(pt o, double r, pt a, pt b) { return area_sector(o, r, a, b) - area_triangle(o, a, b); }
+
 double poly_area(polygon T) {
     double s=0; int n=T.sz;
     fori(i, n) s += T[i] % T[(i+1)%n];
