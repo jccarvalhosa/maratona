@@ -12,10 +12,6 @@ int main() {
 		cin>>s;
 		if(s=="0") break;
 		n = s.size();
-		if(n==1) {
-			cout<<(s[0]=='1' ? 2 : 1)<< endl;
-			continue;
-		}
 		for(int i=0;i<1<<n;i++) v[i].clear();
 		for(int i=0;i<n;i++) v[1<<i].push_back(s[i]-'0');
 		for(int i=1;i<1<<n;i++) {
