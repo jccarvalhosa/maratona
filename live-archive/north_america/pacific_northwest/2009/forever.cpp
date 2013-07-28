@@ -59,9 +59,9 @@ int exp(int a, int e) {
     return exp(a*a, e/2);
 }
 
-pii _fib(int n, int mod) {
+pii fib(int n, int mod) {
 	if(n==0) return pii(0, 1);
-	pii p = _fib(n/2, mod);
+	pii p = fib(n/2, mod);
 	ll a = p.first;
 	ll b = p.second;
 	int c = (((2*a*b - a*a) % mod) + mod)%mod;
@@ -70,18 +70,13 @@ pii _fib(int n, int mod) {
 	return pii(d, (c+d)%mod);
 }
 
-int fib(int n, int mod) {
-	if(n==0) return 0;
-	return _fib(n, mod).first;
-}
-
 int search(int n, int mod) {
     int i, j;
     factor(n);
     divisors();
     for(i=1;i<ndivisors;i++) {
 		int d = divisor[i];
-		if(fib(d, mod)==0 && fib(d+1, mod) == 1) return d;
+		if(fib(d, mod)==pii(0, 1)) return d;
     }
 }
 
