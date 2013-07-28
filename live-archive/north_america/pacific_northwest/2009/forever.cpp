@@ -1,8 +1,14 @@
 #include <cstdio>
-#define MAX (1<<12)+1
+#include <cstring>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+typedef long long ll;
+typedef pair<int, int> pii;
+#define MAX (1<<14)+1
 
 char a[MAX];
-int prime[1000], nprimes=1, p[1000], e[1000], k, ndivisors, divisor[10000], f[20000000];
+int prime[2222], nprimes=1, p[2222], e[2222], k, ndivisors, divisor[11111];
 
 int gcd(int a, int b) { return b ? gcd(b, a%b) : a; }
 
@@ -53,15 +59,29 @@ int exp(int a, int e) {
     return exp(a*a, e/2);
 }
 
-int search(int mod, int n) {
+pii _fib(int n, int mod) {
+	if(n==0) return pii(0, 1);
+	pii p = _fib(n/2, mod);
+	ll a = p.first;
+	ll b = p.second;
+	int c = (((2*a*b - a*a) % mod) + mod)%mod;
+	int d = (a*a + b*b) % mod;
+	if(n%2 == 0) return pii(c, d);
+	return pii(d, (c+d)%mod);
+}
+
+int fib(int n, int mod) {
+	if(n==0) return 0;
+	return _fib(n, mod).first;
+}
+
+int search(int n, int mod) {
     int i, j;
     factor(n);
     divisors();
-    f[0]=0;
-    f[1]=1;
     for(i=1;i<ndivisors;i++) {
-        for(j=2;j<divisor[i]+2;j++) f[j]=(f[j-1]+f[j-2])%mod;
-        if(f[j-1]==1 && f[j-2]==0) return divisor[i];
+		int d = divisor[i];
+		if(fib(d, mod)==0 && fib(d+1, mod) == 1) return d;
     }
 }
 
@@ -69,8 +89,8 @@ int period_prime(int n) {
     if(n==2) return 3;
     if(n==3) return 8;
     if(n==5) return 20;
-    if((n-1)%5==0 || (n+1)%5==0) return search(n, n-1);
-    return search(n, 2*n+2);
+    if((n-1)%5==0 || (n+1)%5==0) return search(n-1, n);
+    return search(2*n+2, n);
 }
 
 int period(int n) {
