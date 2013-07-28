@@ -14,9 +14,9 @@ int gcd(int a, int b) { return b ? gcd(b, a%b) : a; }
 
 int lcm(int a, int b) { return a*b/gcd(a, b); }
 
-void sieve(int d) {
+void sieve() {
     int i, j;
-    for(i=2;i<MAX;i+=2) a[i]=1;
+    for(i=4;i<MAX;i+=2) a[i]=1;
     prime[0]=2;
     for(i=3;i<MAX;i+=2) {
         if(a[i]) continue;
@@ -95,7 +95,7 @@ int period(int n) {
 
 int main() {
     int t, i, n, j, m;
-    sieve(MAX);
+    sieve();
     while(scanf("%d", &n) && n) printf("%d %d\n", n, period(n));
     return 0;
 }
