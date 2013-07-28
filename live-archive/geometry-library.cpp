@@ -385,7 +385,7 @@ double xline(double y, pt a, pt b) {
 	return b.x + (y-b.y)*(a.x-b.x)/(a.y-b.y);
 }
 
-//gira o ponto a teta graus em torno do ponto o
+//gira o ponto a teta radianos em torno do ponto o
 pt rotate(pt a, double teta, pt o=pt()) {
 	a = a - o;
 	pt cis(cos(teta), sin(teta));
