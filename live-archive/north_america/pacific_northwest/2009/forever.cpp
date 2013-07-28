@@ -71,13 +71,9 @@ pii fib(int n, int mod) {
 }
 
 int search(int n, int mod) {
-    int i, j;
     factor(n);
     divisors();
-    for(i=1;i<ndivisors;i++) {
-		int d = divisor[i];
-		if(fib(d, mod)==pii(0, 1)) return d;
-    }
+    for(int i=1;i<ndivisors;i++) if(fib(divisor[i], mod) == pii(0, 1)) return divisor[i];
 }
 
 int period_prime(int n) {
