@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <vector>
 #include <cstring>
 #include <cstdio>
 using namespace std;
@@ -9,7 +8,7 @@ typedef long long ll;
 string ranks = "23456789TJQKA";
 string suits = "cdhs";
 
-long long cards[7777777];
+ll cards[7777777];
 int result[7777777];
 int rank[13], suit[4], cnt[5];
 
@@ -50,15 +49,15 @@ void precalc() {
 	}
 }
 
+ll sum[32];
+int total[32];
+int pay[10];
+
 int main() {
-	int T;
-	ll sum[32];
-	int total[32];
-	cin>>T;
 	precalc();
+	int T;
+	cin>>T;
 	while(T--) {
-		int pay[10];
-		pay[0]=0;
 		for(int i=1;i<10;i++) cin>>pay[i];
 		int Q;
 		cin>>Q;
