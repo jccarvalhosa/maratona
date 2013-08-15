@@ -19,7 +19,9 @@ vector<vector<int> > group(27), adj(81), groups_of(81);
 
 struct Sudoku {
 	vector<Possibles> cell;
-	Sudoku(string s) : cell(81) { for(int i=0;i<81;i++) if(s[i] >= '1' && s[i] <= '9') write(i, s[i] - '0'); }
+	bool is_valid;
+	Sudoku(string s) : cell(81), is_valid(true) { for(int i=0;i<81;i++) if(s[i] >= '1' && s[i] <= '9') write(i, s[i] - '0'); }
+	Sudoku() : cell(81), is_valid(false) {}
 
 	bool write(int k, int val) {
 		for(int i=1;i<=9;i++) if(i != val && !remove(k, i)) return false;
@@ -67,7 +69,6 @@ struct Sudoku {
 			for(int j=0;j<9;j++) cout << cell[i*9 + j].val();
 			cout<<endl;
 		}
-		cout << endl;
 	}
 };
 	
@@ -88,24 +89,20 @@ void init() {
 	}
 }
 
-Sudoku* solve(Sudoku *S) {
-	if(S == NULL || S->is_solved()) return S;
-	int k = S->best();
-	Possibles p = S->cell[k];
+Sudoku solve(Sudoku s) {
+	if(s.is_solved() || !s.is_valid) return s;
+	int k = s.best();
+	Possibles p = s.cell[k];
 	for(int i=1;i<=9;i++) {
 		if(p.valid(i)) {
-			Sudoku *S1 = new Sudoku(*S);
-			if(S1->write(k, i)) {
-				Sudoku *S2 = solve(S1);
-				if (S2 != NULL) {
-					if(S2 != S1) delete S1;
-					return S2;
-				}
+			Sudoku s1 = s;
+			if(s1.write(k, i)) {
+				Sudoku s2 = solve(s1);
+				if(s2.is_valid) return s2;
 			}
-			delete S1;
 		}
 	}
-	return NULL;
+	return Sudoku();
 }
 
 int main() {
@@ -119,8 +116,7 @@ int main() {
 			cin>>aux;
 			s+=aux;
 		}
-		Sudoku* S = solve(new Sudoku(s));
-		S->print();
-		delete S;
+		solve(Sudoku(s)).print();
+		cout << endl;
 	}
 }
