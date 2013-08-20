@@ -392,6 +392,24 @@ pt rotate(pt a, double teta, pt o=pt()) {
 	return o + pt(a.x*cis.x - a.y*cis.y, a.x*cis.y + a.y*cis.x);
 }
 
+//reflete o ponto p na reta definida pelo ponto v (como em uma mesa de sinuca)
+pt reflect(pt p, pt v) {
+	pt px = project(p, v);
+	pt py = p - px;
+	return px - py;
+}
+
+//dados o ponto p interior a elipse e o vetor de movimento d, retorna o ponto da elipse que p vai acertar
+pt ellipse_hit(pt p, pt d, double A, double B) {
+	double a = d.x*d.x/A/A + d.y*d.y/B/B;
+	double b = 2*p.x*d.x/A/A + 2*p.y*d.y/B/B;
+	double c = p.x*p.x/A/A + p.y*p.y/B/B - 1;
+	double delta = sqrt(b*b - 4*a*c);
+	double t1 = (-b + delta)/2/a; 
+	double t2 = (-b - delta)/2/a;
+	return p + d*max(t1, t2);
+}
+
 int main() {
 	return 0;
 }
