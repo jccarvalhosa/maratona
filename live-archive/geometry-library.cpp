@@ -23,8 +23,7 @@ using namespace std;
 #define WATCH(x) TRACE(cout << #x"=" << x << endl)
 #define EPS 1e-6
 #define INF 1e9
-#define mod(a) a > 0 ? a : -a
-const double PI = 2*acos(0);
+const double PI = acos(-1);
 
 typedef pair<double, double> pdd;
 typedef vector<pdd> vpdd;
@@ -58,7 +57,7 @@ bool between(double a, double b, double c) {
 }
 
 struct pt {
-    double x, y, r;
+    double x, y;
 
     pt(double x=0, double y=0): x(x), y(y) {}
 
@@ -189,11 +188,11 @@ circle spanning_circle(vector<pt> v) {
 
 //dados o ponto p e a circunferencia definida por o e r
 //retorna os dois pontos de tangencia de p para a circunferencia
-pair<pt, pt> tangents(pt p, pt o) {
+pair<pt, pt> tangents(pt p, pt o, double r) {
     double a, b, c, teta1, teta2;
-    a = (o.x-p.x)*(o.x-p.x) - o.r*o.r;
+    a = (o.x-p.x)*(o.x-p.x) - r*r;
     b = -2*(o.x-p.x)*(o.y-p.y);
-    c = (o.y-p.y)*(o.y-p.y) - o.r*o.r;
+    c = (o.y-p.y)*(o.y-p.y) - r*r;
     if(cmpD(a) == 0) {
         teta1 = acos(0);
         teta2 = atan2(-c, b);
@@ -210,13 +209,13 @@ pair<pt, pt> tangents(pt p, pt o) {
 //dadas a reta definida pelos pontos a e b, o centro o da circunferencia e o raio r
 //retorna um vetor com os pontos de intersecao entre a reta e a circunferencia
 //o vetor pode ter tamanhos 0, 1 ou 2, dependendo da quantidade de pontos de intersecao
-vector<pt> cuts(pt a, pt b, pt o) {
+vector<pt> cuts(pt a, pt b, pt o, double r) {
     vector<pt> resp;
     pt op = a+project(o-a, b-a);
-    int flag = cmpD(abs(op, o), o.r);
+    int flag = cmpD(abs(op, o), r);
     if(flag == 0) resp.pb(op);
     if(flag == -1) {
-        double d = sqrt(o.r*o.r - (o-op)*(o-op));
+        double d = sqrt(r*r - (o-op)*(o-op));
         resp.pb(op - (b-a)*d/abs(b-a));
         resp.pb(op + (b-a)*d/abs(b-a));
     }
@@ -226,20 +225,20 @@ vector<pt> cuts(pt a, pt b, pt o) {
 //dados o ponto p em que se localiza um canhao, o centro o da circunferencia, o raio r,
 //o angulo de disparo a e o angulo de espalhamento t
 //determina a area que o tiro faz na circunferencia
-double cannon_area(pt p, pt o, double a, double t) {
+double cannon_area(pt p, pt o, double r, double a, double t) {
     double ST,S1,S2,h1,h2,teta1,teta2,ang1,ang2,angtg1,angtg2;
-    ST = PI * o.r * o.r;
+    ST = PI*r*r;
     ang1 = (a - t/2)*PI/180;
     ang2 = (a + t/2)*PI/180;
-    pair<pt, pt> tg = tangents(p, o);
+    pair<pt, pt> tg = tangents(p, o, r);
     angtg1 = arg(tg.first-p);
     angtg2 = arg(tg.second-p);
-    h1 = min(dist_pt_line(o, p, p+pt(cos(ang1), sin(ang1))), o.r);
-    h2 = min(dist_pt_line(o, p, p+pt(cos(ang2), sin(ang2))), o.r);
-    teta1 = acos(h1/o.r);
-    S1 = between(angtg1, ang1, angtg2) * o.r * o.r * (teta1  - sin(2*teta1)/2);
-    teta2 = acos(h2/o.r);
-    S2 = between(angtg1, ang2, angtg2) * o.r * o.r * (teta2  - sin(2*teta2)/2); 
+    h1 = min(dist_pt_line(o, p, p+pt(cos(ang1), sin(ang1))), r);
+    h2 = min(dist_pt_line(o, p, p+pt(cos(ang2), sin(ang2))), r);
+    teta1 = acos(h1/r);
+    S1 = between(angtg1, ang1, angtg2) * r * r * (teta1  - sin(2*teta1)/2);
+    teta2 = acos(h2/r);
+    S2 = between(angtg1, ang2, angtg2) * r * r * (teta2  - sin(2*teta2)/2); 
     if(between(ang1, arg(o-p), ang2)) return ST - S1 - S2;
     return fabs(S1 - S2);
 }
@@ -278,15 +277,15 @@ vseg reverse(vseg v, pt ini, pt fim) {
 //dados o ponto p em que esta uma lampada, o centro da circunferencia, o raio e os pontos ini e fim que definem um anteparo
 //retorna o segmento de reta (p1,p2) aonde estara localizada a sombra produzida pela lampada no anteparo
 //se nenhuma sombra for produzida, retorna um segmento de comprimento nulo
-segment shadow(pt p, pt o, pt ini, pt fim) {
+segment shadow(pt p, pt o, double r, pt ini, pt fim) {
     double d1 = dist_pt_line(p, ini, fim);
     double d2 = dist_pt_line(o, ini, fim);
-    if(cmpD(d1, d2-o.r) <= 0) return mp(pt(), pt());
-    pair<pt, pt> tg = tangents(p, o);
+    if(cmpD(d1, d2-r) <= 0) return mp(pt(), pt());
+    pair<pt, pt> tg = tangents(p, o, r);
     pt p1 = line_intersect(p, tg.first, ini, fim);  
     pt p2 = line_intersect(p, tg.second, ini, fim);  
     if(p1 > p2) swap(p1, p2);
-    if(cmpD(d1, d2+o.r) <= 0) {
+    if(cmpD(d1, d2+r) <= 0) {
         pt pp = ini + project(p, fim - ini);
         pt po = ini + project(o, fim - ini);
         if(p2 == pt(INF, INF)) {
@@ -304,6 +303,7 @@ segment shadow(pt p, pt o, pt ini, pt fim) {
 pt shot(pt p, double teta, double d=1) { return p + pt(cos(teta), sin(teta))*d;  }
 
 //funcao para ordenar os pontos em sentido horario em relacao ao pivot
+//nao use essa funcao se o tempo for apertado: olhe a questao green triangles em yandex/2013/round2/green.cpp
 bool clockwise(pt p, pt q) {
     double a = positive_angle(arg(p-pivot));
     double b = positive_angle(arg(q-pivot));
