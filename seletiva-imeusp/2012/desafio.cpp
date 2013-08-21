@@ -8,20 +8,17 @@ void disable(int x, int y, int dx, int dy) {
 		int nx = x+i*dx;
 		int ny = y+i*dy;
 		if(nx<0 || nx>8 || ny<0 || ny>8) break;
-		if(tab[nx][ny] > 1) {
-			tab[nx][ny] = 3;
-			break;
-		}
-		tab[nx][ny] = 1;
+		tab[nx][ny] |= 1;
+		if(tab[nx][ny] & 2) break;
 	}
 }
 
 void mark(char p, int l, int c) {
-	if(p=='P') tab[l-1][c+1] = tab[l-1][c-1] = 1;
+	if(p=='P') for(int i=-1;i<=1;i+=2) tab[l-1][c+i] |= 1;
 	if(p=='T') for(int i=-1;i<=1;i+=2) disable(l, c, i, 0), disable(l, c, 0, i);
 	if(p=='B') for(int i=-1;i<=1;i+=2) disable(l, c, i, i), disable(l, c, i, -i);
 	if(p=='R') for(int i=-1;i<=1;i++) for(int j=-1;j<=1;j++) if(i || j) disable(l, c, i, j);
-	if(p=='W') for(int i=-1;i<=1;i++) for(int j=-1;j<=1;j++) tab[l+i][c+j] = 1;
+	if(p=='W') for(int i=-1;i<=1;i++) for(int j=-1;j<=1;j++) tab[l+i][c+j] |= 1;
 }
 
 int valid(int l, int c) {
