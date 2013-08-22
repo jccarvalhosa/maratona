@@ -110,7 +110,7 @@ bool large_angle(pt p, pt q, pt r) { return q.right(p, r); }
 pt project(pt a, pt b) { return b * ((a*b) / (b*b)); }
 
 //retorna a projecao do ponto p na reta ab
-double project_pt_line(pt p, pt a, pt b) { return a + project(p-a, b-a); }
+pt project_pt_line(pt p, pt a, pt b) { return a + project(p-a, b-a); }
 
 //normaliza um vetor, retornando false caso ele seja o vetor nulo
 bool normalize(pt &p) {
