@@ -5,27 +5,29 @@
 using namespace std;
 typedef pair<int, int> pii;
 
-int n, ans;
+int n, ans, up[22222], down[22222];
 vector<pii> adj[22222];
 
-int dfs(int v, int p) {
-	int sum=0;
+void dfs(int v, int p) {
+	up[v] = down[v] = 0;
 	for(int i=0;i<adj[v].size();i++) {
 		int u = adj[v][i].first;
 		if(u==p) continue;
-		int delta = dfs(u, v);
+		dfs(u, v);
 		int d = adj[v][i].second;
-		if(d < 0) {
-			if(delta > 0) sum += delta;
-			else {
-				ans += 1-delta;
-				sum++;
-			}
+		if(d > 0) {
+			up[v] += max(1, up[u]);
+			ans += down[u];
 		}
-		else if(delta < 0) sum += delta;
-		else sum--;
+		else {
+			down[v] += max(1, down[u]);
+			ans += up[u];
+		}
 	}
-	return sum;
+	int x = min(up[v], down[v]);
+	up[v] -= x;
+	down[v] -= x;
+	ans += x;
 }
 
 int main() {
@@ -41,10 +43,9 @@ int main() {
 			adj[b].push_back(pii(a, -1));
 		}
 		ans=0;
-		int x = dfs(0, -1);
-		if(x<0) ans -= x;
+		dfs(0, -1);
+		ans += up[0] + down[0];
 		printf("Case %d: %d\n", t, ans);
-
 	}
 	return 0;
 }
