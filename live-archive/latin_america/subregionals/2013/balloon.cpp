@@ -13,11 +13,11 @@ struct pt {
 struct seg { pt p1, p2; };
 int cmp(const seg &a, const seg &b) { return a.p2.y < b.p2.y; }
 
-int n;
+int n, c, q[111111];
 seg s[111111];
+pt v[1111111];
 stack<int> p;
 set<int> vis;
-pt v[1111111];
 
 void go(int pos) {
 	seg sp = s[pos];
@@ -39,10 +39,7 @@ void go(int pos) {
 	}
 }
 
-int q[111111];
-
 int main() {
-	int c;
 	while(scanf("%d %d", &n, &c) != EOF) {
 		for(int i=0;i<n;i++) {
 			cin>>s[i].p1.x>>s[i].p1.y>>s[i].p2.x>>s[i].p2.y;
