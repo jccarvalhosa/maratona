@@ -7,8 +7,7 @@ using namespace std;
 typedef pair<int, int> pii;
 
 int vis[1111];
-set<pii> s; 
-int cmp(int a) { return vis[a]==1; }
+bool cmp(int a) { return vis[a]; }
 
 int main() {
 	int n, m, k;
@@ -32,10 +31,10 @@ int main() {
 	for(int i=0;i<b.size()-1;i++) ans.push_back(pii(b[i], b[i+1]));
 	ans.push_back(pii(b[b.size()-1], a[1]));
 	for(int i=1;i<a.size()-1;i++) ans.push_back(pii(a[i], a[i+1]));
+	set<pii> s; 
 	for(int i=0;i<ans.size();i++) s.insert(ans[i]);
 	for(int i=1;i<=n;i++) for(int j=i+1;j<=n;j++) {
-		if(s.count(pii(i, j))) continue;
-		if(s.count(pii(j, i))) continue;
+		if(s.count(pii(i, j)) || s.count(pii(j, i))) continue;
 		if(i != a[0] && j != a[0] && ans.size() < m) ans.push_back(pii(i, j));
 	}
 	for(int i=1;i<b.size();i++) if(ans.size() < m) ans.push_back(pii(a[0], b[i]));
