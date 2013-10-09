@@ -48,7 +48,6 @@ int main() {
 		}
 		vvv dp(m+1), previ(m+1), prevj(m+1);
 		for(int t=0;t<=m;t++) dp[t] = previ[t] = prevj[t] = vv(t+1, vi(t+1, 0));
-		dp[0][0][0]=1;
 		for(int t=0;t<m;t++) for(int i=0;i<=t;i++) for(int j=0;j<=t;j++) for(int ii=i;ii<=i+1;ii++) for(int jj=j;jj<=j+1;jj++) {
 			int pts = dp[t][i][j];
 			pts += c[ii][t+1-ii];
