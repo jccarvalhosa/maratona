@@ -1,6 +1,4 @@
 #include <iostream>
-#include <algorithm>
-#include <vector>
 #include <string>
 #include <cstring>
 using namespace std;
@@ -20,13 +18,7 @@ int go(int x, int y, int z, int p, int d) {
 	if(p==n) return 1;
 	if(vis[x][y][z] != -1) return 0;
 	vis[x][y][z] = p;
-	if(t[p] == 1) {
-		int nx=x+dx[d], ny=y+dy[d], nz=z+dz[d];
-		if(ok(nx) && ok(ny) && ok(nz) && go(nx, ny, nz, p+1, d)) return 1;
-		vis[x][y][z] = -1;
-		return 0;
-	}
-	for(int dd=0;dd<6;dd++) if(dd!=d) {
+	for(int dd=0;dd<6;dd++) if((t[p]==0 && dd!=d) || (t[p]==1 && dd==d)) {
 		int nx=x+dx[dd], ny=y+dy[dd], nz=z+dz[dd];
 		if(ok(nx) && ok(ny) && ok(nz) && go(nx, ny, nz, p+1, dd)) return 1;
 	}
@@ -38,35 +30,28 @@ int main() {
 	string tab[N];
 	while(cin>>tab[0] && !cin.eof()) {
 		for(int i=1;i<N;i++) cin>>tab[i];
-		char c;
 		for(int i=0;i<n;i++) {
-			if(i%2==0) c = 'A'+i/2;
-			else c = 'a'+i/2;
-			int x, y;
-			for(x=0;x<N;x++) for(y=0;y<N;y++) if(tab[x][y] == c) goto found;
-			found: px[i]=x, py[i]=y;
+			char c='a'+i/2;
+			if(i%2==0) c='A'+i/2;
+			for(int x=0;x<N;x++) for(int y=0;y<N;y++) if(tab[x][y] == c) px[i]=x, py[i]=y;
 		}
-		for(int i=0;i<n-1;i++) {
-			int dd;
-			for(dd=0;dd<4;dd++) if(px[i]+dx[dd] == px[i+1] && py[i]+dy[dd] == py[i+1]) break;
-			d[i]=dd;
-		}
+		for(int i=0;i<n-1;i++) for(int dd=0;dd<4;dd++) if(px[i]+dx[dd] == px[i+1] && py[i]+dy[dd] == py[i+1]) d[i]=dd;
 		for(int i=1;i<n-1;i++) t[i] = (d[i-1]==d[i]);
 		memset(vis, -1, sizeof(vis));
 		for(int i=0;i<3;i++) for(int j=0;j<3;j++) for(int k=0;k<3;k++) for(int d=0;d<6;d++) if(go(i, j, k, 0, d)) goto print;
 		print:
-			for(int i=0;i<3;i++) {
-				for(int j=0;j<3;j++) {
-					if(j>0) cout<<" ";
-					for(int k=0;k<3;k++) {
-						char c='A';
-						if(vis[i][j][k]%2) c='a';
-						c += vis[i][j][k]/2;
-						cout<<c;
-					}
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				if(j>0) cout<<" ";
+				for(int k=0;k<3;k++) {
+					int v = vis[i][j][k];
+					char c='a'+v/2;
+					if(v%2==0) c='A'+v/2;
+					cout<<c;
 				}
-				cout<<endl;
 			}
+			cout<<endl;
+		}
 	}
 	return 0;
 }
