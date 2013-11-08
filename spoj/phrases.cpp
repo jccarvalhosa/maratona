@@ -14,6 +14,7 @@ const int M = 10001;
 ll pot[M];
 
 int valid(int m) {
+	if(!m) return 1;
 	vector<vector<ll> > ans(n);
 	for(int i=0;i<n;i++) {
 		if(s[i].size() < m) return 0;
