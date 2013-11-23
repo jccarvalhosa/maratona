@@ -30,11 +30,9 @@ void count(int n, int k) {
 	}
 }
 
-ll mult(ll p, ll n) {
-	ll ret=0;
-	while(n >= p) n /= p, ret += n;
-	return ret;
-}
+ll sum(ll p, ll n) { return n==0 ? 0 : n%p + sum(p, n/p); }
+
+ll mult(ll p, ll n) { return (n - sum(p, n))/(p-1); }
 
 int valid(ll n) {
 	if(n<=0) return 0;
