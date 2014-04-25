@@ -40,7 +40,7 @@ int main()
 	while(T--)
 	{
 		ll n;
-		scanf("%lld", &n);
+		cin>>n;
 		printf("Case %d: ", t++);
 		ll l = search_line(n);
 		ll sum = n - l*(l+1)*(2*l+1)/6;
