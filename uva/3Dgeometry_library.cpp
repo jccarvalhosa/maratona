@@ -35,6 +35,12 @@ pt cross(pt a, pt b) { return pt(a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y -
 //retorna a projecao do ponto b no ponto a
 pt project(pt a, pt b) { return b * dot(a, b) / dot(b, b); }
 
+//retorna a projecao do ponto p na reta ab
+pt project(pt p, pt a, pt b) { return a + project(p-a, b-a); }
+
+//retorna a projecao do ponto p no plano abc
+pt project(pt p, pt a, pt b, pt c) { return p + project(c-p, cross(a-c, b-c)); }
+
 //retorna true se as pontos a, b, c e d sao coplanares
 bool coplanar(pt a, pt b, pt c, pt d) { 
 	pt p = cross(a-b, c-b);
@@ -44,6 +50,9 @@ bool coplanar(pt a, pt b, pt c, pt d) {
 
 //retorna a area do triangulo abc
 double area(pt a, pt b, pt c) { return !cross(b-a, c-a) / 2; }
+
+//retorna true se o ponto p esta acima do plano abc
+bool above(pt p, pt a, pt b, pt c) { return cmpD(dot(p-a, cross(b-a, c-a))) > 0; }
 
 //retorna true se os segmentos ab e cd se interseptam
 bool seg_seg_intersect(pt a, pt b, pt c, pt d) {
@@ -86,7 +95,7 @@ bool tri_tri_intersect(pt T1[3], pt T2[3]) {
 
 //retorna a distancia entre o ponto p e o segmento ab
 double dist_pt_seg(pt p, pt a, pt b) {
-    pt pp = a + project(p-a, b-a);
+    pt pp = project(p, a, b);
     if(cmpD(!(a-pp) + !(pp-b), !(a-b)) == 0) return !(pp - p);
     return min(!(p - a), !(p - b));
 }
@@ -102,15 +111,17 @@ double dist_seg_seg(pt a, pt b, pt c, pt d) {
 
 //retorna a distancia entre o ponto p e o triangulo abc
 double dist_pt_tri(pt p, pt a, pt b, pt c) {
-    pt n, pp, v1, v2, v3;
-    n = cross(a-c, b-c);
-    pp = p + project(c-p, n);
+	pt pp, v1, v2, v3;
+    pp = project(p, a, b, c);
     v1 = cross(pp-a, b-a);
     v2 = cross(pp-b, c-b);
     v3 = cross(pp-c, a-c);
     if(cmpD(dot(v1, v2)) >= 0 && cmpD(dot(v1, v3)) >= 0 && cmpD(dot(v2, v3)) >= 0) return !(pp - p);
     return min(dist_pt_seg(p, a, b), min(dist_pt_seg(p, a, c), dist_pt_seg(p, b, c)));
 }
+
+//retorna a distancia entre o ponto p e o plano abc
+double dist_pt_plane(pt p, pt a, pt b, pt c) { return !(p - project(p, a, b, c)); }
 
 //retorna a distancia entre os tetraedros T1 e T2
 double dist_tet_tet(pt T1[4], pt T2[4]) {
