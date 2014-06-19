@@ -168,25 +168,25 @@ pt circumcenter(pt p, pt q, pt r) {
     return pt(c % pt(a.y, b.y), pt(a.x, b.x) % c) / (a % b);
 }
 
-typedef pair<pt, double> circle;
+bool in_circle(pt p, pt o, double r) { return cmpD(abs(o, p), r) <= 0; }
 
-bool in_circle(circle c, pt p) { return cmpD(abs(c.first, p), c.second) <= 0; }
-
-circle spanning_circle(vector<pt> v) {
+void spanning_circle(vector<pt> v, pt &o, double &r) {
 	int i, j, k, n = v.size();
 	random_shuffle(v.begin(), v.end());
-	circle c(pt(), -INF);
-	for(i=0;i<n;i++) if(!in_circle(c, v[i])) {
-		c = circle(v[i], 0);
-		for(j=0;j<i;j++) if(!in_circle(c, v[j])) {
-			c = circle((v[i]+v[j])/2, abs(v[i]-v[j])/2);
-			for(k=0;k<j;k++) if(!in_circle(c, v[k])) {
-				pt o=circumcenter(v[i], v[j], v[k]);
-				c = circle(o, abs(o-v[k]));
+	o=pt(); 
+	r=-INF;
+	for(i=0;i<n;i++) if(!in_circle(v[i], o, r)) {
+		o = v[i];
+		r = 0;
+		for(j=0;j<i;j++) if(!in_circle(v[j], o, r)) {
+			o = (v[i]+v[j])/2;
+			r = abs(v[i]-v[j])/2;
+			for(k=0;k<j;k++) if(!in_circle(v[k], o, r)) {
+				o = circumcenter(v[i], v[j], v[k]);
+				r = abs(o-v[k]);
 			}
 		}
 	}
-	return c;
 }
 
 //dados o ponto p e a circunferencia definida por o e r
@@ -411,6 +411,25 @@ pt ellipse_hit(pt p, pt d, double A, double B) {
 	double t1 = (-b + delta)/2/a; 
 	double t2 = (-b - delta)/2/a;
 	return p + d*max(t1, t2);
+}
+
+double area_inter(pt a, pt b, pt o, double r) {
+	vector<pt> v, aux=cuts(a, b, o, r);
+	for(int i=0;i<aux.size();i++) if(aux[i].between(a, b)) v.pb(aux[i]);
+	if(v.size()==0) return in_circle(a, o, r) ? area_triangle(o, a, b) : area_sector(o, r, a, b);
+	if(v.size()==1) {
+		double sa = in_circle(a, o, r) ? area_triangle(o, a, v[0]) : area_sector(o, r, a, v[0]);
+		double sb = in_circle(b, o, r) ? area_triangle(o, v[0], b) : area_sector(o, r, v[0], b);
+		return sa + sb;
+	}
+	return area_sector(o, r, a, b) - area_cut(o, r, v[0], v[1]);
+}
+
+//area de intersecao entre um poligono e uma circunferencia
+pt area_inter_polygon_circle(polygon p, pt o, double r) {
+	double s = 0; int n = p.size();
+	for(int i=0;i<n;i++) s += area_inter(p[i], p[(i+1)%n], o, r);
+	return s;
 }
 
 int main() {
