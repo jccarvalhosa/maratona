@@ -20,10 +20,7 @@ int hld(int v, int p) {
         if(u==p) continue;
         int s = hld(u, v);
         sum += s;
-        if(s > smax) {
-            smax = s;
-            m = u;
-        }
+        if(s > smax) smax = s, m = u;
     }
     if(m != -1) heavy[m] = 1;
     return sum+1;
