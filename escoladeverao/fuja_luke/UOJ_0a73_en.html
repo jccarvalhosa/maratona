@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>URI 1503 - Run Luke, run!</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <meta name="author" content="URI Online Judge; www.urionlinejudge.edu.br" />
+            <meta name="description" content="URI Online Judge - Problem 1503 - Run Luke, run!" />
+
+            <link rel="stylesheet" type="text/css" href="http://static.urionlinejudge.com.br/repository/default.css" />
+        </head>
+        <body>
+
+            <div class="header">
+                <span>URI Online Judge | 1503</span>
+                <h1>Run Luke, run!</h1>
+                <div>
+                    <p>By Jonathan Carvalhosa, IME (Instituto Militar de Engenharia) <img src='http://www.urionlinejudge.com.br/gallery/images/flags/br.gif' alt='BR' /> Brazil</p>
+                </div>
+                <strong>Timelimit: 1</strong>
+            </div>
+
+            <div class="problem">
+
+                <div class="description">
+                    <p>The Death Star will explode and Luke Skywalker has to get out of there as fast as possible.</p>
+
+<p>To hinder his escape, droids are positioned at certain points of the star.</p>
+
+<p>The star map is a rectangle composed only by empty spaces, walls and droids.</p>
+
+<p>The droids don`t move and can shoot at straight line along its row and its column, but their shots cannot&nbsp;pass through walls.</p>
+
+<p>As Luke is disarmed, he can`t defend shots and need to escape without entering the line of sight of any droid.</p>
+
+<p>You must create a program to check if Luke escapes the star or not.</p>
+
+                </div>
+
+                <h2>Input</h2>
+
+                <div class="input">
+                    <p>The first line of input contains two integers n and m (2 &lt;= n, m &lt;= 100), indicating the height and width of the Death Star.</p>
+
+<p>The next N lines have m characters each.</p>
+
+<p>Empty cells are represented by the character '.' , cells with droids are represented by the character 'D' and walls are represented by '#'.</p>
+
+<p>Luke begins at the upper left cell, and the exit of the Death Star is the lower right cell.</p>
+
+<p>The point at which Luke begins and the exit of the star always contains empty cells.</p>
+
+                </div>
+
+                <h2>Output</h2>
+
+                <div class="output">
+                    <p>The output of the problem should be a single line containing:</p>
+
+<p>The string "Run Luke, run", if he can escape from the star.</p>
+
+<p>The string "May the force be with you", if he can not escape.</p>
+
+                </div>
+
+                <div class="both"></div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Sample Input</td>
+                            <td>Sample Output</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="division">
+                                <p>5 6</p>
+
+<p>.#.D..</p>
+
+<p>.#D...</p>
+
+<p>..##..</p>
+
+<p>#.....</p>
+
+<p>D...#.</p>
+
+                            </td>
+                            <td>
+                                <p>Run Luke, run</p>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="footer">
+                    
+                </p>
+            </div>
+
+        </body>
+    </html>
